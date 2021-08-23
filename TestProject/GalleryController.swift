@@ -24,11 +24,21 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
 
         //隐藏navigationbar
         navigationController?.setNavigationBarHidden(false, animated:false)
+
+        
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.systemPurple
+        headerView.frame.size.height = self.view.frame.width * 2 / 5
+        let headerTitle = UILabel()
+        headerTitle.text = "我是头部"
+        headerView.addSubview(headerTitle)
+        
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ImageCell.classForCoder(), forCellReuseIdentifier: CELL_ID)
         tableView.tableFooterView = UIView.init()
+        tableView.tableHeaderView = headerView
         self.view.addSubview(tableView)
         
         
@@ -38,6 +48,7 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
         }.autoChangeTransparency(true)
         .link(to: tableView)
         tableView.mj_header?.beginRefreshing()
+        
         
         //添加Footer刷新
         var images = Array<UIImage>()
@@ -59,6 +70,10 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
         
         tableView.snp.makeConstraints{(make)-> Void in
             make.edges.equalToSuperview()
+        }
+        
+        headerTitle.snp.makeConstraints{(make) -> Void in
+            make.center.equalToSuperview()
         }
         
         //先从缓存读取数据

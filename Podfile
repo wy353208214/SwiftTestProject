@@ -13,4 +13,5 @@ target 'TestProject' do
   pod 'Zoomy', '~> 4.0.0'
   pod 'MJRefresh'
   pod 'Toast-Swift', '~> 5.0.1'
+  pod 'Tabman', '~> 2.11'
 end

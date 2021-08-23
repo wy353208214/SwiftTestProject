@@ -22,7 +22,9 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
     
     private let ID = "PhotoDetail"
     private var collectionView: UICollectionView?
-    private var titleLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let titleBox = UIView()
+    private let downloadBtn = UIButton()
     
 
     override func viewDidLoad() {
@@ -44,9 +46,7 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
         
         
         //顶部Title
-        let titleBox = UIView()
         titleBox.backgroundColor = UIColor.init(white: 0, alpha: 0.5)
-        
         titleLabel.numberOfLines = 2
         titleLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
         titleLabel.font = UIFont.systemFont(ofSize: 18)
@@ -56,7 +56,6 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
         
         
         //底部下载的Button
-        let downloadBtn = UIButton()
         downloadBtn.layer.masksToBounds = true
         downloadBtn.layer.cornerRadius = 10.0
         downloadBtn.layer.borderWidth = 1.0
@@ -96,7 +95,6 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
         
         collectionView?.scrollToItem(at: IndexPath(item: select, section: 0), at: UICollectionView.ScrollPosition.centeredHorizontally, animated: false)
         collectionView?.isPagingEnabled = true
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
@@ -137,7 +135,10 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
     
     
     @objc func back() {
-        navigationController?.popViewController(animated: true)
+//        navigationController?.popViewController(animated: true)
+        titleBox.isHidden = !titleBox.isHidden
+        downloadBtn.isHidden = !downloadBtn.isHidden
+        
     }
 
     
