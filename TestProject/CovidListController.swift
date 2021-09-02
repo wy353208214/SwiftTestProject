@@ -22,6 +22,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         self.view.backgroundColor = UIColor.white
         
         tableView.showsVerticalScrollIndicator = false
+        tableView.bounces = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init()
@@ -38,6 +39,8 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         let confirmedLabel = CovidListController.generalLabel(text: "累计", textColor: textColor, backgroundcColor: backgroundColor)
         let recoveredLabel = CovidListController.generalLabel(text: "治愈", textColor: textColor, backgroundcColor: backgroundColor)
         let deathLabel = CovidListController.generalLabel(text: "死亡", textColor: textColor, backgroundcColor: backgroundColor)
+        let offsetView = UIView()
+        offsetView.backgroundColor = backgroundColor
         
         //添加View
         stickyHeaderView.addSubview(areaLabel)
@@ -46,21 +49,30 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         stickyHeaderView.addSubview(confirmedLabel)
         stickyHeaderView.addSubview(recoveredLabel)
         stickyHeaderView.addSubview(deathLabel)
+//        stickyHeaderView
         self.view.addSubview(stickyHeaderView)
+        self.view.addSubview(offsetView)
         self.view.addSubview(tableView)
 
         //添加约束
         CovidListController.makeRowConstraints(items: areaLabel, newLabel, activeLabel, confirmedLabel, recoveredLabel, deathLabel, offset: 2, firstWidth: 90)
         stickyHeaderView.snp.makeConstraints{(make) -> Void in
-            make.width.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalTo(offsetView.snp.left)
             make.height.equalTo(40)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+        }
+        offsetView.snp.makeConstraints{(make) -> Void in
+            make.width.equalTo(10)
+            make.height.equalTo(stickyHeaderView.snp.height)
+            make.right.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
         }
         tableView.snp.makeConstraints{(make) -> Void in
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.height.equalToSuperview()
-            make.top.equalTo(stickyHeaderView.snp.bottom)
+            make.top.equalTo(stickyHeaderView.snp.bottom).offset(1)
         }
         
         getDatas()
@@ -78,7 +90,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //定义静态方法给内部类调用，设置约束
-    class func makeRowConstraints(items: UIView..., offset: Float, firstWidth: Float = 80) {
+    class func makeRowConstraints(items: UIView..., offset: Float, firstWidth: Float = 80, lastWidth: Float = 80) {
         var before = UIView()
         
         for i in 0 ..< items.count {
@@ -193,6 +205,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
                             dateFormatter.dateFormat = "yyyy-MM-dd"
                             date = dateFormatter.string(from: tmpDate!)
                         }
+                        print(province)
 
                         self.datas.append(CovidModel.init(id: id,
                                                           country: country,
@@ -208,6 +221,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
         }
+    
     }
     
     class CovidCell: UITableViewCell {
@@ -241,7 +255,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
             self.contentView.addSubview(recoveredLabel)
             self.contentView.addSubview(deathdLabel)
             
-            makeRowConstraints(items: provinceLabel, newConfirmedLabel, activedLabel, totalConfirmedLabel, recoveredLabel, deathdLabel, offset: 0)
+            makeRowConstraints(items: provinceLabel, newConfirmedLabel, activedLabel, totalConfirmedLabel, recoveredLabel, deathdLabel, offset: 1)
         }
         
         override func layoutSubviews() {

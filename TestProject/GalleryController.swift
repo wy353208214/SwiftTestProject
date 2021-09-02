@@ -22,7 +22,7 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //隐藏navigationbar
+        //显示navigationbar
         navigationController?.setNavigationBarHidden(false, animated:false)
 
         

@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
         let centerBox = UIView()
         
+        //Hello world
         let label = UILabel()
         label.textAlignment = NSTextAlignment.center
         label.font = UIFont.boldSystemFont(ofSize: 24)
@@ -33,7 +34,7 @@ class ViewController: UIViewController {
         label.layer.masksToBounds = true
         label.layer.cornerRadius = 10.0
          
-        
+        //PageController
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 10.0
         button.layer.borderWidth = 1.0
@@ -44,6 +45,7 @@ class ViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         button.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
+        //PhotoListController
         let box = UIView()
         box.layer.cornerRadius = 8
         box.layer.masksToBounds = true
@@ -57,6 +59,7 @@ class ViewController: UIViewController {
         child.font = UIFont.boldSystemFont(ofSize: 24)
         child.backgroundColor = UIColor.black
         
+        //CovidController
         let covindBtn = UIButton()
         covindBtn.layer.masksToBounds = true
         covindBtn.layer.cornerRadius = 10.0
@@ -68,19 +71,32 @@ class ViewController: UIViewController {
         covindBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         covindBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
+        //地区列表
+        let areaBtn = UIButton()
+        areaBtn.layer.masksToBounds = true
+        areaBtn.layer.cornerRadius = 10.0
+        areaBtn.layer.borderWidth = 1.0
+        areaBtn.layer.borderColor = UIColor.lightGray.cgColor
+        areaBtn.showsTouchWhenHighlighted = true
+        areaBtn.backgroundColor = UIColor.systemYellow
+        areaBtn.setTitle("Area Controller", for: UIControl.State.normal)
+        areaBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        areaBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
+        
         
         box.addSubview(child)
         centerBox.addSubview(box)
         centerBox.addSubview(label)
         centerBox.addSubview(button)
         centerBox.addSubview(covindBtn)
+        centerBox.addSubview(areaBtn)
         self.view.addSubview(centerBox)
         
         centerBox.snp.makeConstraints{(make) -> Void in
             make.center.equalToSuperview()
             make.width.equalToSuperview()
             make.top.equalTo(label.snp.top)
-            make.bottom.equalTo(covindBtn.snp.bottom)
+            make.bottom.equalTo(areaBtn.snp.bottom)
         }
     
         //Hello World
@@ -99,7 +115,6 @@ class ViewController: UIViewController {
             make.height.equalTo(60)
             make.centerX.equalToSuperview()
         }
-        
         
         //PhotoList
         child.snp.makeConstraints{ (make) -> Void in
@@ -126,8 +141,18 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
+        //Area Controller
+        areaBtn.snp.makeConstraints{ (make) -> Void in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(covindBtn.snp.bottom).offset(20)
+            make.height.equalTo(60)
+            make.centerX.equalToSuperview()
+        }
+        
         button.addTarget(self, action: #selector(self.onClick), for: UIControl.Event.touchUpInside)
         covindBtn.addTarget(self, action: #selector(self.goCovidController), for: UIControl.Event.touchUpInside)
+        areaBtn.addTarget(self, action: #selector(self.goAreas), for: UIControl.Event.touchUpInside)
         
         let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.goGallery))
         tap.numberOfTapsRequired = 1
@@ -147,12 +172,20 @@ class ViewController: UIViewController {
     
     @objc func goCovidController(){
         self.navigationController?.pushViewController(CovidListController(), animated:true)
-        //模态跳转Modal
-//        present(PhtotoDetailController(), animated: true)
     }
     
     @objc func goGallery() {
         self.navigationController?.pushViewController(GalleryController(), animated:false)
+//        let filePath = Bundle.main.path(forResource: "cn_area", ofType: "db")
+//        let dbm = DbManager.instance
+//        dbm.setPath(path: filePath!)
+//        let rowid = dbm.insert(areaModel: AreaModel(code: 660000000000, province: "台湾省", level: 1, pcode: 0))
+//        print(rowid)
+        
+    }
+    
+    @objc func goAreas() {
+          self.navigationController?.pushViewController(AreasController(), animated:false)
     }
     
     override func viewDidAppear(_ animated: Bool) {

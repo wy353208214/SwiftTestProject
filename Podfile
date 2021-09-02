@@ -14,4 +14,5 @@ target 'TestProject' do
   pod 'MJRefresh'
   pod 'Toast-Swift', '~> 5.0.1'
   pod 'Tabman', '~> 2.11'
+  pod 'SQLite.swift', '~> 0.13.0'
 end
