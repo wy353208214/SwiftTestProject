@@ -2,8 +2,8 @@
 //  PhtotoDetailController.swift
 //  TestProject
 //
-//  Created by steven on 2021/7/29.
-//  Copyright © 2021 qpidnetwork. All rights reserved.
+//  Created by Yang on 2021/7/29.
+//  Copyright © 2021 hackyang. All rights reserved.
 //
 
 import UIKit

@@ -2,8 +2,8 @@
 //  GalleryController.swift
 //  TestProject
 //
-//  Created by steven on 2021/8/2.
-//  Copyright © 2021 qpidnetwork. All rights reserved.
+//  Created by yang on 2021/8/2.
+//  Copyright © 2021 hackyang. All rights reserved.
 //
 
 import UIKit

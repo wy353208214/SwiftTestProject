@@ -2,8 +2,8 @@
 //  ContentView.swift
 //  TestProject
 //
-//  Created by steven on 2020/6/11.
-//  Copyright © 2020 qpidnetwork. All rights reserved.
+//  Created by Yang on 2020/6/11.
+//  Copyright © 2020 hackyang. All rights reserved.
 //
 
 import SwiftUI
