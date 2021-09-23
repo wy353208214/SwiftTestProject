@@ -22,7 +22,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         self.view.backgroundColor = UIColor.white
         
         tableView.showsVerticalScrollIndicator = false
-        tableView.bounces = false
+//        tableView.bounces = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init()
@@ -205,7 +205,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
                             dateFormatter.dateFormat = "yyyy-MM-dd"
                             date = dateFormatter.string(from: tmpDate!)
                         }
-                        print(province)
+//                        print(province)
 
                         self.datas.append(CovidModel.init(id: id,
                                                           country: country,

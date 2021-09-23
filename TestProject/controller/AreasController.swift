@@ -42,11 +42,11 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
                 self.tableView.reloadData()
             }
         )
-        
     }
     
     @objc func addArea() {
         let alertController = UIAlertController(title: "添加省份", message: "请输入省份信息", preferredStyle: UIAlertController.Style.alert)
+        
         alertController.addTextField{(textField: UITextField!) -> Void in
                 textField.placeholder = "code"
         }
@@ -60,25 +60,23 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
             textField.placeholder = "PCode"
         }
         
-        
         let okAction = UIAlertAction(title: "确定", style: UIAlertAction.Style.default) {
             (action) -> Void in
             let code = Int((alertController.textFields?[0].text)!)
             let province = alertController.textFields?[1].text
             let level = Int((alertController.textFields?[2].text)!)
             let pCode = Int((alertController.textFields?[3].text)!)
-            
+
             if code == nil || province == nil || level == nil || pCode == nil {
                 self.view.makeToast("不能为nil")
                 return
             }
-            
+
             //插入数据库
             let dbm = DbManager.instance
             let rowid = dbm.insert(areaModel: AreaModel(code: code!, province: province!, level: level!, pcode: pCode!))
             self.view.makeToast("RowID is \(rowid)")
             print(rowid)
-            
         }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertAction.Style.cancel, handler: nil)
         alertController.addAction(okAction)
@@ -94,7 +92,7 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let area = areas[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath)
-        cell.textLabel?.text = "\(area.code) - \(area.level) - \(area.pcode) - \(area.province)"
+        cell.textLabel?.text = area.province
         return cell
     }
 

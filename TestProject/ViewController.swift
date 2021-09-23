@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.showsTouchWhenHighlighted = true
         button.backgroundColor = UIColor.systemGreen
-        button.setTitle("Page Controller", for: UIControl.State.normal)
+        button.setTitle("CosPlay美女", for: UIControl.State.normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         button.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         box.layer.borderColor = UIColor.orange.cgColor
         box.backgroundColor = UIColor.orange
         let child = UILabel()
-        child.text = "PhotoList Controller"
+        child.text = "美女图片"
         child.textAlignment = .center
         child.textColor = UIColor.white
         child.font = UIFont.boldSystemFont(ofSize: 24)
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
         covindBtn.layer.borderColor = UIColor.lightGray.cgColor
         covindBtn.showsTouchWhenHighlighted = true
         covindBtn.backgroundColor = UIColor.systemTeal
-        covindBtn.setTitle("Covid Controller", for: UIControl.State.normal)
+        covindBtn.setTitle("新冠实时统计", for: UIControl.State.normal)
         covindBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         covindBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
@@ -78,8 +78,9 @@ class ViewController: UIViewController {
         areaBtn.layer.borderWidth = 1.0
         areaBtn.layer.borderColor = UIColor.lightGray.cgColor
         areaBtn.showsTouchWhenHighlighted = true
+
         areaBtn.backgroundColor = UIColor.systemYellow
-        areaBtn.setTitle("Area Controller", for: UIControl.State.normal)
+        areaBtn.setTitle("地区选择", for: UIControl.State.normal)
         areaBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         areaBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
@@ -158,7 +159,6 @@ class ViewController: UIViewController {
         tap.numberOfTapsRequired = 1
         box.isUserInteractionEnabled = true
         box.addGestureRecognizer(tap)
-
     
 //        let contenView = ContentView()
         // Do any additional setup after loading the view.
@@ -176,16 +176,10 @@ class ViewController: UIViewController {
     
     @objc func goGallery() {
         self.navigationController?.pushViewController(GalleryController(), animated:false)
-//        let filePath = Bundle.main.path(forResource: "cn_area", ofType: "db")
-//        let dbm = DbManager.instance
-//        dbm.setPath(path: filePath!)
-//        let rowid = dbm.insert(areaModel: AreaModel(code: 660000000000, province: "台湾省", level: 1, pcode: 0))
-//        print(rowid)
-        
     }
     
     @objc func goAreas() {
-          self.navigationController?.pushViewController(AreasController(), animated:false)
+          self.navigationController?.pushViewController(MoviesController(), animated:false)
     }
     
     override func viewDidAppear(_ animated: Bool) {

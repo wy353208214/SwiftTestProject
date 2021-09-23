@@ -10,11 +10,12 @@ import UIKit
 import Alamofire
 import MJRefresh
 
-class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     private let CELL_ID = "Image Cell";
     private var datas = Array<PhotoItem>.init()
     private let tableView = UITableView()
+    private let headImage = UIImageView()
     private var currentPage = 1
     
     private var footer:MJRefreshBackGifFooter?
@@ -24,14 +25,14 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
 
         //显示navigationbar
         navigationController?.setNavigationBarHidden(false, animated:false)
-
         
         let headerView = UIView()
         headerView.backgroundColor = UIColor.systemPurple
-        headerView.frame.size.height = self.view.frame.width * 2 / 5
-        let headerTitle = UILabel()
-        headerTitle.text = "我是头部"
-        headerView.addSubview(headerTitle)
+        headerView.frame.size.height = self.view.frame.width * 4 / 7
+        headImage.clipsToBounds = true
+        
+        headImage.contentMode = UIView.ContentMode.scaleAspectFill
+        headerView.addSubview(headImage)
         
         
         tableView.delegate = self
@@ -72,8 +73,8 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
             make.edges.equalToSuperview()
         }
         
-        headerTitle.snp.makeConstraints{(make) -> Void in
-            make.center.equalToSuperview()
+        headImage.snp.makeConstraints{(make) -> Void in
+            make.size.equalToSuperview()
         }
         
         //先从缓存读取数据
@@ -84,14 +85,30 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
             let url = data["cover"] as! String
             self.datas.append(PhotoItem(url: url, title: title))
         }
+
+        headImage.sd_setImage(with:  URL(string:datas[Int.random(in: 0..<datas.count)].url))
         self.tableView.reloadData()
-        
 
     }
     
     
     @objc func loadMore() {
         getPhotoList(page: currentPage + 1, isRefesh: false)
+    }
+    
+    @objc func onRefreshComplete() {
+        //更新头部
+        headImage.sd_setImage(with:  URL(string:datas[Int.random(in: 0..<datas.count)].url))
+        tableView.reloadData()
+        
+        //第一次刷新完毕之后再添加footer
+        if tableView.mj_footer == nil {
+            tableView.mj_footer = footer!
+        }
+    }
+    
+    @objc func onLoadMoreComplete() {
+        tableView.reloadData()
     }
     
     
@@ -121,20 +138,14 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
                         let url = data["cover"] as! String
                         self.datas.append(PhotoItem(url: url, title: title))
                     }
-                    self.tableView.reloadData()
-                    
-                    //第一次刷新完毕之后再添加footer
-                    if self.tableView.mj_footer == nil {
-                        self.tableView.mj_footer = self.footer!
-                    }
                 }
             }else {
                 print(response.error!)
             }
             if isRefesh {
-                self.tableView.mj_header?.endRefreshing()
+                self.tableView.mj_header?.endRefreshing(completionBlock: self.onRefreshComplete)
             } else {
-                self.tableView.mj_footer?.endRefreshing()
+                self.tableView.mj_footer?.endRefreshing(completionBlock: self.onLoadMoreComplete)
             }
         }
     }
