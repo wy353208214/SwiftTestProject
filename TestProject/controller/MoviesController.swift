@@ -58,7 +58,7 @@ class MoviesController: UIViewController, UICollectionViewDelegate, UICollection
     
     
     private func getMovies() {
-        AF.request("https://api.isoyu.com/api/Video/video_type?type=2&page=20")
+        AF.request("https://api.isoyu.com/api/Video/video_type?type=2&page=30")
             .responseJSON {response in
                 if let json = response.value {
                     let dict = json as? NSDictionary
