@@ -47,28 +47,25 @@ class VideoPlayerController: UIViewController {
         //设置播放状态监听
         self.videoPlayer.playerDelegate = self
         self.videoPlayer.playbackDelegate = self
-        self.videoPlayer.playerView.playerBackgroundColor = .white
+        self.videoPlayer.playerView.playerBackgroundColor = .black
         
         //设置播放器控制条
         progressView.maximumTrackTintColor = .white
         progressView.minimumTrackTintColor = .systemGreen
-        
+        //总时长
         lengthLabel.textColor = .white
         lengthLabel.font = .systemFont(ofSize: 12)
         lengthLabel.numberOfLines = 1
         lengthLabel.preferredMaxLayoutWidth = 20
-        
+        //当前播放位置
         currentTimeLabel.textColor = .white
         currentTimeLabel.font = .systemFont(ofSize: 12)
         currentTimeLabel.numberOfLines = 1
         currentTimeLabel.preferredMaxLayoutWidth = 20
-        
         progressContent.backgroundColor = UIColor.init(white: 0, alpha: 0.4)
-        
         
         addChild(self.videoPlayer)
         view.addSubview(self.videoPlayer.view)
-        
         //添加底部控制器
         progressContent.addSubview(progressView)
         progressContent.addSubview(lengthLabel)
@@ -111,6 +108,7 @@ class VideoPlayerController: UIViewController {
             make.right.equalTo(lengthLabel.snp.left).offset(-2)
             make.height.equalTo(4)
         }
+        //默认先隐藏控制条
         progressContent.isHidden = true
     }
     
@@ -120,6 +118,7 @@ class VideoPlayerController: UIViewController {
         self.videoPlayer.playFromBeginning()
     }
     
+    //秒转换成01:31:08格式的时间
     func formateHSM(second: Int) -> String {
         let formatter = DateComponentsFormatter.init()
         formatter.zeroFormattingBehavior = .pad
@@ -136,7 +135,6 @@ class VideoPlayerController: UIViewController {
     @objc func sliderValueChanged(slider: UISlider) {
         //拖动到指定时间
         let cmt = CMTimeMake(value: Int64(slider.value), timescale:1)
-//        print(cmt.value)
         self.videoPlayer.seek(to: cmt)
     }
     
@@ -172,7 +170,7 @@ extension VideoPlayerController: PlayerDelegate {
         
         self.progressView.maximumValue = Float(videoDuration)
         lengthLabel.text = formateHSM(second: videoDuration)
-        
+        //准备好播放之后显示控制条
         progressContent.isHidden = false
     }
     

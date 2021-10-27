@@ -97,6 +97,7 @@ class PhtotoDetailController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.isPagingEnabled = true
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, canFocusItemAt indexPath: IndexPath) -> Bool {
         return true
     }

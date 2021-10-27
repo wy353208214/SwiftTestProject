@@ -179,7 +179,8 @@ class ViewController: UIViewController {
     }
     
     @objc func goAreas() {
-          self.navigationController?.pushViewController(MoviesController(), animated:false)
+//        self.navigationController?.pushViewController(MoviesController(), animated:false)
+        self.navigationController?.pushViewController(AreasController(), animated:false)
     }
     
     override func viewDidAppear(_ animated: Bool) {

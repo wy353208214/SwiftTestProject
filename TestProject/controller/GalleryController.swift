@@ -85,8 +85,9 @@ class GalleryController: UIViewController, UITableViewDelegate, UITableViewDataS
             let url = data["cover"] as! String
             self.datas.append(PhotoItem(url: url, title: title))
         }
-
-        headImage.sd_setImage(with:  URL(string:datas[Int.random(in: 0..<datas.count)].url))
+        if !datas.isEmpty {
+            headImage.sd_setImage(with: URL(string:datas[Int.random(in: 0..<datas.count)].url))
+        }
         self.tableView.reloadData()
 
     }

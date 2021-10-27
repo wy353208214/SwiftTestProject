@@ -14,6 +14,18 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
     private var areas = Array<AreaModel>()
     private let tableView = UITableView()
     private let CELL_ID = "AreasCell"
+    private var pcode: Int = 0
+    
+    init(pcode: Int = 0) {
+        super.init(nibName: nil, bundle: nil)
+        self.pcode = pcode
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +34,6 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
         navigationController?.setNavigationBarHidden(false, animated:false)
         let buttonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(self.addArea))
         self.navigationItem.rightBarButtonItem = buttonItem
-        
         // Do any additional setup after loading the view.
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints{(make) -> Void in
@@ -34,7 +45,7 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
         tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: CELL_ID)
         
         let dbm = DbManager.instance
-        dbm.query()?.subscribe(
+        dbm.query(p_code: pcode)?.subscribe(
             onNext: {row in
                 self.areas.append(contentsOf: row)
             },
@@ -93,8 +104,33 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
         let area = areas[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: CELL_ID, for: indexPath)
         cell.textLabel?.text = area.province
+        
+        cell.contentView.tag = indexPath.row
+        cell.contentView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(itemClick(tab:)))
+        tap.numberOfTapsRequired = 1
+        tap.cancelsTouchesInView = false
+        cell.contentView.addGestureRecognizer(tap)
         return cell
     }
-
+    
+    @objc func itemClick(tab: UIGestureRecognizer) {
+        let position = (tab.view?.tag)! as Int
+        let area = areas[position]
+        var controller: UIViewController!
+        //这里查询是否还有下一级区域，如果没有就直接跳转到天气详情页面
+        DbManager.instance.queryCount(code: area.code).subscribe(
+            onNext: {count in
+                if count != 0 && area.level < 3 {
+                    controller = AreasController.init(pcode: self.areas[position].code)
+                }else {
+                    controller = WeatherController.init(area: area)
+                }
+            },
+            onCompleted: {
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+        )
+    }
 
 }

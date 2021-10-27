@@ -22,7 +22,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         self.view.backgroundColor = UIColor.white
         
         tableView.showsVerticalScrollIndicator = false
-//        tableView.bounces = false
+        tableView.bounces = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView.init()
@@ -71,7 +71,7 @@ class CovidListController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.snp.makeConstraints{(make) -> Void in
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
-            make.height.equalToSuperview()
+            make.bottom.equalToSuperview()
             make.top.equalTo(stickyHeaderView.snp.bottom).offset(1)
         }
         

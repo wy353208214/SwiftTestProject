@@ -35,7 +35,7 @@ final class DbManager{
         self.path = dbFile.path
     }
     
-    func query() -> Observable<Array<AreaModel>>?{
+    func query(p_code: Int = 0) -> Observable<Array<AreaModel>>?{
         if path == nil {
             return nil
         }
@@ -49,10 +49,12 @@ final class DbManager{
                 let name = Expression<String>("name")
                 let level = Expression<Int>("level")
                 let pcode = Expression<Int>("pcode")
+                let lng = Expression<Double>("lng")
+                let lat = Expression<Double>("lat")
                 
-                let sql = areas.filter(level == 1).order(code)
+                let sql = areas.filter(pcode == p_code).order(code)
                 for area in try db.prepare(sql) {
-                    let areaModel = AreaModel(code: area[code], province: area[name], level: area[level], pcode: area[pcode])
+                    let areaModel = AreaModel(code: area[code], province: area[name], level: area[level], pcode: area[pcode], lng: area[lng], lat: area[lat])
                     areaList.append(areaModel)
                 }
                 subcriber.onNext(areaList)
@@ -80,6 +82,25 @@ final class DbManager{
             print(error)
         }
         return rowid
+    }
+    
+    func queryCount(code: Int) -> Observable<Int> {
+        return Observable<Int>.create{subcriber in
+            var count = 0
+            do {
+                let db = try Connection(self.path!)
+                let areas = Table("area_code_2021")
+                let pcode = Expression<Int>("pcode")
+                let sql = areas.filter(pcode == code).count
+                try count = db.scalar(sql)
+                subcriber.onNext(count)
+            }catch {
+                print(error)
+            }
+            subcriber.onCompleted()
+            return Disposables.create()
+        }.subscribe(on: ConcurrentDispatchQueueScheduler.init(qos: .background))
+        .observe(on: MainScheduler.instance)
     }
     
 }
