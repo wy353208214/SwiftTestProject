@@ -16,9 +16,12 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
     private let CELL_ID = "AreasCell"
     private var pcode: Int = 0
     
-    init(pcode: Int = 0) {
+    public var areaDelegate: AreaDelegate?
+    
+    init(pcode: Int = 0, areaDelegate: AreaDelegate?) {
         super.init(nibName: nil, bundle: nil)
         self.pcode = pcode
+        self.areaDelegate = areaDelegate
     }
     
     required init?(coder: NSCoder) {
@@ -117,18 +120,16 @@ class AreasController: UIViewController, UITableViewDelegate, UITableViewDataSou
     @objc func itemClick(tab: UIGestureRecognizer) {
         let position = (tab.view?.tag)! as Int
         let area = areas[position]
-        var controller: UIViewController!
         //这里查询是否还有下一级区域，如果没有就直接跳转到天气详情页面
         DbManager.instance.queryCount(code: area.code).subscribe(
             onNext: {count in
                 if count != 0 && area.level < 3 {
-                    controller = AreasController.init(pcode: self.areas[position].code)
+                    let controller = AreasController.init(pcode: self.areas[position].code,areaDelegate: self.areaDelegate)
+                    self.navigationController?.pushViewController(controller, animated: true)
                 }else {
-                    controller = WeatherController.init(area: area)
+                    self.navigationController?.popToRootViewController(animated: false)
+                    self.areaDelegate?.onSelect(area: area)
                 }
-            },
-            onCompleted: {
-                self.navigationController?.pushViewController(controller, animated: true)
             }
         )
     }

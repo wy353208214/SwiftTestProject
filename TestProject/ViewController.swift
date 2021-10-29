@@ -8,7 +8,7 @@
 
 import SnapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AreaDelegate{
 
     private let WIDTH = CGFloat(360)
     private let button = UIButton()
@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         let label = UILabel()
         label.textAlignment = NSTextAlignment.center
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.text = "hello world hello world hello world hello world "
+        label.text = "看电影"
         label.textColor = UIColor.white
         label.backgroundColor = UIColor.blue
         //限制最大宽度及行数，超过宽度显示为...省略号
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
         areaBtn.showsTouchWhenHighlighted = true
 
         areaBtn.backgroundColor = UIColor.systemYellow
-        areaBtn.setTitle("地区选择", for: UIControl.State.normal)
+        areaBtn.setTitle("天气预报", for: UIControl.State.normal)
         areaBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         areaBtn.titleLabel?.lineBreakMode = NSLineBreakMode.byTruncatingTail
         
@@ -159,9 +159,18 @@ class ViewController: UIViewController {
         tap.numberOfTapsRequired = 1
         box.isUserInteractionEnabled = true
         box.addGestureRecognizer(tap)
+        
+        let tap4Movie = UITapGestureRecognizer.init(target: self, action: #selector(self.goMovie))
+        tap4Movie.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap4Movie)
     
 //        let contenView = ContentView()
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func goMovie() {
+        self.navigationController?.pushViewController(MoviesController(), animated:false)
     }
     
     @objc func onClick(){
@@ -179,13 +188,17 @@ class ViewController: UIViewController {
     }
     
     @objc func goAreas() {
-//        self.navigationController?.pushViewController(MoviesController(), animated:false)
-        self.navigationController?.pushViewController(AreasController(), animated:false)
+        self.navigationController?.pushViewController(AreasController(areaDelegate: self), animated:false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         //隐藏navigationbar
         navigationController?.setNavigationBarHidden(true, animated:false)
+    }
+    
+    
+    func onSelect(area: AreaModel) {
+        self.navigationController?.pushViewController(WeatherController(area: area), animated: true)
     }
 
 }

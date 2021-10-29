@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import RxSwift
 
-class WeatherController: UIViewController {
+class WeatherController: UIViewController{
 
     private let address = UILabel()
     private let temperature = UILabel()
@@ -29,6 +29,7 @@ class WeatherController: UIViewController {
     }
     
     override func viewDidLoad() {
+        self.navigationController?.setNavigationBarHidden(false, animated:false)
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.systemBlue
         self.view.addSubview(address)
@@ -85,4 +86,5 @@ class WeatherController: UIViewController {
         }
     }
 
+    
 }
